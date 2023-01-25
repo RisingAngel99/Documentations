@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mc:
+    container_name: minecraft-server
+    image: itzg/minecraft-server
+    ports:
+      - "25565:25565"
+    env_file:
+      - stack.env
+    volumes:
+      - /data/minecraft:/data
+    stdin_open: true
+    tty: true
+    restart: always
