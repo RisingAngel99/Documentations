@@ -1,42 +1,29 @@
 # Install Docker & Portainer
 
+In this Tutrial, I explain, how to install Docker and Portainer on a Fedora Server.
+
 ## Docker install
-***
 
-Um die Docker Repo hinzuzufügen, braucht man folgenden Command:
-
-```
-sudo dnf install dnf-plugins-core
-```
-
-Der folgende Command fügt man die docker-ce repository hinzu:
+Requirements before installing docker:
 
 ```
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf upgrade -y
 ```
 
-Der folgende Command installiert nun Docker:
+Now you can install docker:
 
 ```
-sudo dnf install docker-ce docker-ce-cli containerd.io -y
+sudo dnf install docker -y
 ```
 
-Um den Docker Service zu starten benutze folgendes:
+You must config sytemctl, that docker is starting after any reboot:
 
 ```
-sudo systemctl start docker
+sudo systemctl enable --now docker
 ```
 
 
-Um Docker in den Autostart von Fedora zu packen, braucht man folgenden Command:
-
-```
-sudo systemctl enable docker
-```
-
-
-
-Um den User nun der Dockergruppe hinzuzufügen, muss man folgendes eingeben:
+That task makes sure, that the user don´t need sudo anymore for docker tasks:
 
 ```
 sudo gpasswd -a administrator docker && sudo systemctl restart docker
@@ -47,20 +34,22 @@ newgrp docker
 ## Portainer install
 ***
 
-Als erstes wird ein Volume erstellt, um die Daten von Portainer zu speichern:
+First create a volume for portainer himself with this command:
 
 ```
 docker volume create portainer_data
 ```
 
-Nun wird Portainer Business Edition installiert:
+Now insatlling Portainer:
 
 ```
-docker run -d -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ee:latest
+docker run -d -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 ```
 
-Jetzt kann man noch prüfen, ob Portainer richtig installiert wurde mit
+Now you can check, if Portainer is online with:
 
 ```
 docker ps
 ```
+
+At last you can enter the Portainer WebUI with: https://%ServerIP%:9443
