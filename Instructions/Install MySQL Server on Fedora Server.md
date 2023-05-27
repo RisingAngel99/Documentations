@@ -1,12 +1,14 @@
 # Install MySQL Server on Fedora Server
 
-```bash
-sudo dnf install https://dev.mysql.com/get/mysql80-community-release-fc36-1.noarch.rpm
+## Install and activate MySQL Server
 
-sudo dnf install mysql-community-server
+```bash
+sudo dnf install community-mysql-server -y
 
 sudo systemctl enable --now mysqld
 ```
+
+## Give root a password and login
 
 ```bash
 sudo grep 'temporary password' /var/log/mysqld.log
@@ -16,12 +18,10 @@ sudo mysql_secure_installation
 sudo mysql -u root -p
 ```
 
+## Create Users and access witch the MySQL Database 
+
 ```bash
 CREATE USER 'your_username'@'host_ip_addr' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON *.* TO 'your_username'@'%';
 FLUSH PRIVILEGES;
-```
-
-```
-sudo rpm -e --nodeps mysql-community-libs mysql-community-common mysql-community-server
 ```
